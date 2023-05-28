@@ -2,6 +2,9 @@ import tkinter as tk
 from flask import Flask, render_template, request
 from cisc179.base import Cisc179
 
+app = Flask(__name__)
+cisc179 = Cisc179()
+
 class App:
     def __init__(self, master):
         self.master = master
@@ -16,8 +19,6 @@ class App:
             "module6",
         ]
 
-        self.cisc179 = Cisc179()
-
         self.create_widgets()
 
     def create_widgets(self):
@@ -25,45 +26,34 @@ class App:
             label = tk.Label(self.master, text=f"Module {index + 1}: {module_name}")
             label.pack()
 
-            if module_name == "module4":
-                button = tk.Button(self.master, text=f"Execute Module {index + 1}", command=self.execute_module4)
-            else:
-                button = tk.Button(self.master, text=f"Execute Module {index + 1}",
-                                   command=lambda module_name=module_name: self.execute_module(module_name))
-
+            button = tk.Button(self.master, text=f"Execute Module {index + 1}",
+                               command=lambda module_name=module_name: self.execute_module(module_name))
             button.pack()
 
     def execute_module(self, module_name):
-        module_class = self.cisc179.get_module_by_name(module_name)
+        module_class = cisc179.get_module_by_name(module_name)
         module_instance = module_class()
         result = module_instance.execute()
-        return render_template('result.html', result=result)
-
-
-app = Flask(__name__)
+        print(result)
 
 @app.route('/')
 def index():
-    cisc179 = Cisc179()
     module_names = cisc179.module_names.values()
     return render_template('index.html', module_names=module_names)
 
 @app.route('/execute', methods=['POST'])
 def execute():
     module_name = request.form['module_name']
-    cisc179 = Cisc179()
     module_class = cisc179.get_module_by_name(module_name)
     module_instance = module_class()
     result = module_instance.execute()
     return render_template('result.html', result=result)
+
 
 def main():
     root = tk.Tk()
     app = App(root)
     root.mainloop()
 
-
-
 if __name__ == "__main__":
-    app.run(debug=True)
-
+    app.run(debug=True, threaded=True)
