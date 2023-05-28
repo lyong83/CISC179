@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CISC 179 Browser</title>
+</head>
+<body>
+    <h1>Welcome to CISC 179 Final Project Browser</h1>
+    <p>Content: {{ module_content }}</p>
+    <ul>
+        {% for module_name in module_names %}
+        <li>
+            <form action="/execute" method="POST">
+                <input type="hidden" name="module_name" value="{{ module_name }}">
+                <button type="submit">Execute {{ module_name }}</button>
+            </form>
+        </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
