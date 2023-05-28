@@ -32,11 +32,11 @@ def read_requirements(path):
 setup(
     name="cisc179",
     version=read("cisc179", "VERSION"),
-    description="Awesome cisc179 created by ahuang-cs",
-    url="https://github.com/ahuang-cs/CISC179/",
+    description="Cisc179 Final project created by lG",
+    url="https://github.com/lyong83/CISC179",
     long_description=read("README.md"),
     long_description_content_type="text/markdown",
-    author="ahuang-cs",
+    author="lGao",
     packages=find_packages(exclude=["tests", ".github"]),
     install_requires=read_requirements("requirements.txt"),
     entry_points={
